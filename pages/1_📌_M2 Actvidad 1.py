@@ -43,7 +43,7 @@ Libros = {
 }
 
 df = pd.DataFrame(Libros)
-st.write(df)
+st.dataframe(df)
 
 st.subheader("Dataframe de Informacion de ciudades -- Listas de Diccionarios")
 ciudades = [{"Nombre" : "Medellin", "Poblacion" : " 2 533 424", "Pais" : "Colombia"},
@@ -51,4 +51,4 @@ ciudades = [{"Nombre" : "Medellin", "Poblacion" : " 2 533 424", "Pais" : "Colomb
             {"Nombre" : "Cali", "Poblacion" : "2 294 653 ", "Pais" : "Colombia"}]
 
 df = pd.DataFrame(ciudades)
-st.write(df)
+st.dataframe(df)

@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 # Configuración de la página
 st.set_page_config(   
@@ -26,4 +27,38 @@ st.markdown("""
 """)
 
 st.header("Solución")
+
+
+st.title("Eploracion de Datos con pandas y streamlit")
+st.header("Solución")
+
+df = pd.read_csv('integrador\static\estudiantes_colombia.csv')
+
+st.dataframe(df)
+
+st.title("Las primeras 5 filas")
+st.dataframe(df.head())
+
+st.title("Las ultimas 5 filas")
+
+st.dataframe(df.tail())
+
+st.title("Mostrar un infrome con: .info()")
+
+st.write(df.info())
+
+st.title("Mostrar las estadisticas basicas con: .describe()")
+
+st.write(df.describe()) 
+
+st.title("Columnas especificas ")
+
+st.write(df[['nombre', 'edad', 'promedio']])
+
+
+
+st.title("Filtrar estudiantes con promedio mayor -- Utilizando Slider")
+promedio_usuario = st.slider("Promedio", min_value=0, max_value=100, value=75)
+
+st.markdown("</div>", unsafe_allow_html=True)
 

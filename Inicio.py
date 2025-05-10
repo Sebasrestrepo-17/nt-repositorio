@@ -128,8 +128,8 @@ with col1:
 # Columna derecha: Información del estudiante
 with col2:
     st.markdown('<h3 style="color: #0066cc; margin-top: 0px;">Kennet Sebastian Restrepo Aguirre</h3>', unsafe_allow_html=True)
-    st.markdown('<p style="margin-top: 10px;">Programa: <span style="color: #0066cc; font-weight: bold;">Desarrollo de Software</span></p>', unsafe_allow_html=True)
-    st.markdown('<p>Semestre: <span style="color: #0066cc; font-weight: bold;">2025-1</span></p>', unsafe_allow_html=True)
+    st.markdown('<p style="margin-top: 10px;">Programa: <span style="color: #0066cc; font-weight: bold;">Tecnico Laboral en Asistente en Desarrollo de Software</span></p>', unsafe_allow_html=True)
+    st.markdown('<p>Semestre: <span style="color: #0066cc; font-weight: bold;">2025-3</span></p>', unsafe_allow_html=True)
     st.markdown('<p>Repositorio: <a href="https://github.com/Sebasrestrepo-17/nt-repositorio.git" target="_blank" style="color: #0066cc; font-weight: bold; text-decoration: none;">GitHub</a></p>', unsafe_allow_html=True)
    
 
