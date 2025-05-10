@@ -35,8 +35,8 @@ st.header("Solución")
 df = pd.read_csv("assets\static\datos.csv", parse_dates=['fecha_nacimiento'])
 df_nuevo = df.copy()
 
-st.title("🔍 Aplicación de Filtros Dinámicos - CRM de Ventas")
-st.sidebar.title("🔧 Filtros")
+st.title("Aplicación de Filtros Dinámicos - CRM de Ventas")
+st.sidebar.title("Filtros")
 
 # 1. Filtro por rango de edad 
 if st.sidebar.checkbox("Filtrar por rango de edad"):

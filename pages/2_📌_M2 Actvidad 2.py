@@ -29,7 +29,7 @@ st.markdown("""
 st.header("Solución")
 
 
-st.title("Eploracion de Datos con pandas y streamlit")
+st.title("Exploracion de Datos con pandas y streamlit")
 st.header("Solución")
 
 df = pd.read_csv('assets\static\estudiantes_colombia.csv')
