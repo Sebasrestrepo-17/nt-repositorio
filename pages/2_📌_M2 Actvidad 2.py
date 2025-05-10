@@ -32,7 +32,7 @@ st.header("Solución")
 st.title("Eploracion de Datos con pandas y streamlit")
 st.header("Solución")
 
-df = pd.read_csv('.venv\static\estudiantes_colombia.csv')
+df = pd.read_csv('pages\static\estudiantes_colombia.csv')
 
 st.dataframe(df)
 

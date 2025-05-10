@@ -32,7 +32,7 @@ st.header("Solución")
 
 
 
-df = pd.read_csv(".venv\static\datos.csv", parse_dates=['fecha_nacimiento'])
+df = pd.read_csv("pages\static\datos.csv", parse_dates=['fecha_nacimiento'])
 df_nuevo = df.copy()
 
 st.title("🔍 Aplicación de Filtros Dinámicos - CRM de Ventas")
