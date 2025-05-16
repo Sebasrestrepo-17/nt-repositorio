@@ -32,10 +32,10 @@ st.header("Solución")
 
 st.subheader("Exploración de Datos con pandas y Streamlit")
 
-# Ruta corregida al archivo CSV en la carpeta assets
+
 df = pd.read_csv("assets/datos/estudiantes_colombia.csv")
 
-# Mostrar las primeras 5 filas
+
 st.subheader("Primeras 5 filas del dataset")
 st.write(df.head())
 
@@ -43,21 +43,21 @@ st.write(df.head())
 st.subheader("Últimas 5 filas del dataset")
 st.write(df.tail())
 
-# Información general del dataset
+
 st.subheader("Información del dataset (.info())")
 buffer = io.StringIO()
 df.info(buf=buffer)
 st.text(buffer.getvalue())
 
-# Estadísticas descriptivas
+
 st.subheader("Estadísticas descriptivas (.describe())")
 st.write(df.describe())
 
-# Mostrar columnas específicas
+
 st.subheader("Columnas específicas: nombre, edad y promedio")
 st.write(df[["nombre", "edad", "promedio"]])
 
-# Filtrar estudiantes por promedio con slider
+
 st.subheader("Filtrar estudiantes con promedio mayor a un valor")
 promedio_usuario = st.slider("Selecciona el promedio mínimo:", min_value=0, max_value=100, value=75)
 filtrados = df[df["promedio"] > promedio_usuario]

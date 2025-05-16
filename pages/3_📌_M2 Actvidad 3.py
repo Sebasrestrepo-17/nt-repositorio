@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import datetime
+from datetime import date
 
 # Configuración de la página
 st.set_page_config(   
@@ -29,71 +29,71 @@ st.markdown("""
 
 st.header("Solución")
 
+st.subheader("Actividad #3 -- Google Colab")
+st.markdown("[Abrir en Google Colab](https://colab.research.google.com/drive/1tKo89cvTVSJCFmutkkU4fHbxG_C7K2TF?usp=sharing)")
 
 
+df = pd.read_csv("assets/datos/datos.csv", parse_dates=["fecha_nacimiento"])
 
-df = pd.read_csv("datos\datos.csv", parse_dates=['fecha_nacimiento'])
-df_nuevo = df.copy()
+st.subheader("Actividad #3 -- Python/Streamlit")
 
-st.title("Aplicación de Filtros Dinámicos - CRM de Ventas")
-st.sidebar.title("Filtros")
 
-# 1. Filtro por rango de edad 
+# Copia del DataFrame para aplicar filtros
+df_filtrado = df.copy()
+
+st.sidebar.header("Filtros")
+
+# 1. Filtro por rango de edad
 if st.sidebar.checkbox("Filtrar por rango de edad"):
-    edad_min, edad_max = st.sidebar.slider("Selecciona el rango de edad", 15, 75, (20, 40))
-    df_nuevo = df_nuevo[df_nuevo['edad'].between(edad_min, edad_max)]
+    min_edad, max_edad = st.sidebar.slider("Selecciona el rango de edad", 15, 75, (18, 60))
+    df_filtrado = df_filtrado[df_filtrado['edad'].between(min_edad, max_edad)]
 
-# 2. Filtro por municipios específicos
+# 2. Filtro por municipios
 if st.sidebar.checkbox("Filtrar por municipios"):
-    municipios = ['Barranquilla', 'Santa Marta', 'Cartagena', 'Bogotá', 'Medellín', 'Tunja', 'Manizales', 'Cali', 'Quibdó', 'Buenaventura', 'Villavicencio', 'Yopal', 'Leticia', 'Puerto Inírida']
-    municipios_seleccionados = st.sidebar.multiselect("Selecciona los municipios", municipios)
-    if municipios_seleccionados:
-        df_nuevo = df_nuevo[df_nuevo['municipio'].isin(municipios_seleccionados)]
+    municipios_opciones = df['municipio'].dropna().unique().tolist()
+    municipios = st.sidebar.multiselect("Selecciona los municipios", municipios_opciones)
+    if municipios:
+        df_filtrado = df_filtrado[df_filtrado['municipio'].isin(municipios)]
 
 # 3. Filtro por ingreso mensual mínimo
 if st.sidebar.checkbox("Filtrar por ingreso mensual mínimo"):
-    ingreso_min = st.sidebar.slider("Ingreso mensual mínimo (COP)", 800000, 12000000, 2000000, step=100000)
-    df_nuevo = df_nuevo[df_nuevo['ingreso_mensual'] > ingreso_min]
+    ingreso_min = st.sidebar.slider("Ingreso mínimo (COP)", 800000, 12000000, 3000000, step=100000)
+    df_filtrado = df_filtrado[df_filtrado['ingreso_mensual'] > ingreso_min]
 
 # 4. Filtro por ocupación
 if st.sidebar.checkbox("Filtrar por ocupación"):
-    ocupaciones = ['Estudiante', 'Docente', 'Comerciante', 'Agricultor', 'Ingeniero', 'Médico', 'Desempleado', 'Pensionado', 'Emprendedora', 'Obrera']
-    ocupaciones_seleccionadas = st.sidebar.multiselect("Selecciona las ocupaciones", ocupaciones)
-    if ocupaciones_seleccionadas:
-        df_nuevo = df_nuevo[df_nuevo['ocupacion'].isin(ocupaciones_seleccionadas)]
+    ocupaciones = df['ocupacion'].dropna().unique().tolist()
+    seleccionadas = st.sidebar.multiselect("Selecciona ocupaciones", ocupaciones)
+    if seleccionadas:
+        df_filtrado = df_filtrado[df_filtrado['ocupacion'].isin(seleccionadas)]
 
-# 5. Filtro por tipo de vivienda no propia
+# 5. Filtro por tipo de vivienda NO Propia
 if st.sidebar.checkbox("Filtrar personas sin vivienda propia"):
-    df_nuevo = df_nuevo[~(df_nuevo['tipo_vivienda'] == 'Propia')]
+    df_filtrado = df_filtrado[df_filtrado['tipo_vivienda'] != 'Propia']
 
-# 6. Filtro por nombres que contienen una cadena
+# 6. Filtro por nombre contiene texto
 if st.sidebar.checkbox("Filtrar por nombre"):
-    cadena = st.sidebar.text_input("Texto contenido en el nombre")
-    if cadena:
-        df_nuevo = df_nuevo[df_nuevo['nombre_completo'].str.contains(cadena, case=False, na=False)]
+    texto = st.sidebar.text_input("Ingresa parte del nombre")
+    if texto:
+        df_filtrado = df_filtrado[df_filtrado['nombre_completo'].str.contains(texto, case=False, na=False)]
 
 # 7. Filtro por año de nacimiento
 if st.sidebar.checkbox("Filtrar por año de nacimiento"):
-    anio = st.sidebar.selectbox("Selecciona el año", list(range(1949, 2010)))
-    df_nuevo = df_nuevo[df_nuevo['fecha_nacimiento'].dt.year == anio]
+    año = st.sidebar.selectbox("Selecciona el año", list(range(1949, 2010)))
+    df_filtrado = df_filtrado[df_filtrado['fecha_nacimiento'].dt.year == año]
 
 # 8. Filtro por acceso a internet
 if st.sidebar.checkbox("Filtrar por acceso a internet"):
-    acceso = st.sidebar.radio("Tiene acceso a internet:", ["Sí", "No"])
-    valor = True if acceso == "Sí" else False
-    df_nuevo = df_nuevo[df_nuevo['acceso_internet'] == valor]
+    acceso = st.sidebar.radio("¿Tiene acceso a internet?", ["Sí", "No"])
+    df_filtrado = df_filtrado[df_filtrado['acceso_internet'] == (acceso == "Sí")]
 
 # 9. Filtro por ingresos nulos
 if st.sidebar.checkbox("Filtrar por ingresos nulos"):
-    df_nuevo = df_nuevo[df_nuevo['ingreso_mensual'].isnull()]
+    df_filtrado = df_filtrado[df_filtrado['ingreso_mensual'].isnull()]
 
-# 10. Filtro por rango de fechas de nacimiento
-if st.sidebar.checkbox("Filtrar por rango de fechas de nacimiento"):
-    fecha_inicio = st.sidebar.date_input("Fecha de inicio", datetime.date(1949, 1, 1))
-    fecha_fin = st.sidebar.date_input("Fecha de fin", datetime.date(2009, 12, 31))
-    df_nuevo = df_nuevo[df_nuevo['fecha_nacimiento'].between(pd.to_datetime(fecha_inicio), pd.to_datetime(fecha_fin))]
 
-st.subheader("Resultado de los filtros")
-st.dataframe(df_nuevo, use_container_width=True)
 
-st.caption("Total de registros encontrados: {}".format(len(df_nuevo)))
+# Mostrar resultados
+st.subheader("Resultados del filtro")
+st.write(f"Total de registros encontrados: {len(df_filtrado)}")
+st.dataframe(df_filtrado)
