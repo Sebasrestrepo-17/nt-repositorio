@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import io
 
 # Configuración de la página
 st.set_page_config(   
@@ -29,36 +30,36 @@ st.markdown("""
 st.header("Solución")
 
 
-st.title("Exploracion de Datos con pandas y streamlit")
-st.header("Solución")
+st.subheader("Exploración de Datos con pandas y Streamlit")
 
-df = pd.read_csv('datos\estudiantes_colombia.csv')
+# Ruta corregida al archivo CSV en la carpeta assets
+df = pd.read_csv("assets/datos/estudiantes_colombia.csv")
 
-st.dataframe(df)
+# Mostrar las primeras 5 filas
+st.subheader("Primeras 5 filas del dataset")
+st.write(df.head())
 
-st.title("Las primeras 5 filas")
-st.dataframe(df.head())
+# Mostrar las últimas 5 filas
+st.subheader("Últimas 5 filas del dataset")
+st.write(df.tail())
 
-st.title("Las ultimas 5 filas")
+# Información general del dataset
+st.subheader("Información del dataset (.info())")
+buffer = io.StringIO()
+df.info(buf=buffer)
+st.text(buffer.getvalue())
 
-st.dataframe(df.tail())
+# Estadísticas descriptivas
+st.subheader("Estadísticas descriptivas (.describe())")
+st.write(df.describe())
 
-st.title("Mostrar un infrome con: .info()")
+# Mostrar columnas específicas
+st.subheader("Columnas específicas: nombre, edad y promedio")
+st.write(df[["nombre", "edad", "promedio"]])
 
-st.write(df.info())
-
-st.title("Mostrar las estadisticas basicas con: .describe()")
-
-st.write(df.describe()) 
-
-st.title("Columnas especificas ")
-
-st.write(df[['nombre', 'edad', 'promedio']])
-
-
-
-st.title("Filtrar estudiantes con promedio mayor -- Utilizando Slider")
-promedio_usuario = st.slider("Promedio", min_value=0, max_value=100, value=75)
-
-st.markdown("</div>", unsafe_allow_html=True)
-
+# Filtrar estudiantes por promedio con slider
+st.subheader("Filtrar estudiantes con promedio mayor a un valor")
+promedio_usuario = st.slider("Selecciona el promedio mínimo:", min_value=0, max_value=100, value=75)
+filtrados = df[df["promedio"] > promedio_usuario]
+st.write(f"Estudiantes con promedio mayor a {promedio_usuario}:")
+st.write(filtrados)
